@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/mesh_db
+    username: mesh_user
+    password: mesh_test1
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      jakarta:
+        persistence:
+          sharedCache:
+            mode: ENABLE_SELECTIVE
+      hibernate:
+        cache:
+          use_second_level_cache: true
+          region:
+            factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
+          use_query_cache: true
+        generate_statistics: true
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/changelog.yml
+
+jwt:
+  secret: C0untryR0adsTak3MeH0me

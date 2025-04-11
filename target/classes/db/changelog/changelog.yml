@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: mesh_user
+      changes:
+        - sqlFile:
+            path: ./changes/V1__initial_schema.sql
+            relativeToChangelogFile: true
+  - changeSet:
+      id: 2
+      author: mesh_user
+      changes:
+        - sqlFile:
+            path: ./changes/V2__add_users.sql
+            relativeToChangelogFile: true
