@@ -1,2 +1,2 @@
 # test_task
- test task
+## docker-compose up -d for initializing test PostgreSQL database
