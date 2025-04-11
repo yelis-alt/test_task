@@ -6,13 +6,13 @@ import com.example.test_task.exception.InsufficientFundsException;
 import com.example.test_task.persistence.entity.AccountEntity;
 import com.example.test_task.persistence.mapper.AccountMapper;
 import com.example.test_task.persistence.repo.AccountRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -57,6 +57,6 @@ public class FinanceService {
     }
 
     private EntityNotFoundException throwNotFoundException(Long userId) {
-        throw new EntityNotFoundException("Account not found for user: %s".formatted(userId));
+        throw new EntityNotFoundException(String.format("Account not found for user: %s", userId));
     }
 }

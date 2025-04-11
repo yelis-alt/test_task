@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-04-11T19:06:35+0300",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.5 (Eclipse Adoptium)"
+    date = "2025-04-11T22:01:07+0300",
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 11.0.26 (Amazon.com Inc.)"
 )
 @Component
 public class AccountMapperImpl implements AccountMapper {

@@ -45,15 +45,15 @@ public class ContactService {
         getChangeRequestByEnumMap(requestList).forEach((contactType, requests) -> {
             List<String> requestValueList = requests.stream()
                     .map(ContactChangeRequest::getValue)
-                    .toList();
+                    .collect(Collectors.toList());
 
             switch (contactType) {
-                case PHONE -> {
+                case PHONE: {
                     validateContactList(ContactTypeEnum.PHONE, requestValueList);
 
                     List<PhoneDataEntity> entityForSaveList = requests.stream()
                             .map(r -> new PhoneDataEntity(userId, r.getValue()))
-                            .toList();
+                            .collect(Collectors.toList());
 
                     try {
                         List<PhoneDataEntity> savedEntityList = phoneDataRepository.saveAll(entityForSaveList);
@@ -61,7 +61,7 @@ public class ContactService {
 
                         resultList.addAll(savedEntityList.stream()
                                 .map(phoneDataMapper::toDto)
-                                .toList());
+                                .collect(Collectors.toList()));
                     } catch (Exception e) {
                         log.error("Failed to save {} phone data for user_id: {} due to {}",
                                 entityForSaveList.size(),
@@ -69,12 +69,12 @@ public class ContactService {
                                 e.getMessage());
                     }
                 }
-                case EMAIL -> {
+                case EMAIL: {
                     validateContactList(ContactTypeEnum.EMAIL, requestValueList);
 
                     List<EmailDataEntity> entityForSaveList = requests.stream()
                             .map(r -> new EmailDataEntity(userId, r.getValue()))
-                            .toList();
+                            .collect(Collectors.toList());
 
                     try {
                         List<EmailDataEntity> savedEntityList = emailDataRepository.saveAll(entityForSaveList);
@@ -82,7 +82,7 @@ public class ContactService {
 
                         resultList.addAll(savedEntityList.stream()
                                 .map(emailDataMapper::toDto)
-                                .toList());
+                                .collect(Collectors.toList()));
                     } catch (Exception e) {
                         log.error("Failed to save {} email data for user_id: {} due to {}",
                                 entityForSaveList.size(),
@@ -102,10 +102,10 @@ public class ContactService {
                 .forEach((contactType, requests) -> {
                     List<String> requestValueList = requests.stream()
                             .map(ContactChangeRequest::getValue)
-                            .toList();
+                            .collect(Collectors.toList());
 
                     switch (contactType) {
-                        case PHONE -> {
+                        case PHONE: {
                             if (phoneDataRepository.countAllByUserId(userId) > requestList.size()) {
                                 try {
                                     phoneDataRepository.deleteByUserIdAndPhoneIn(userId, requestValueList);
@@ -117,10 +117,10 @@ public class ContactService {
                                             e.getMessage());
                                 }
                             } else {
-                                throw new CountConstraintException(COUNT_EXCEPTION_TEMPLATE.formatted("phone"));
+                                throw new CountConstraintException(String.format(COUNT_EXCEPTION_TEMPLATE, "phone"));
                             }
                         }
-                        case EMAIL -> {
+                        case EMAIL: {
                             if (emailDataRepository.countAllByUserId(userId) > requestList.size()) {
                                 try {
                                     emailDataRepository.deleteByUserIdAndEmailIn(userId, requestValueList);
@@ -132,7 +132,7 @@ public class ContactService {
                                             e.getMessage());
                                 }
                             } else {
-                                throw new CountConstraintException(COUNT_EXCEPTION_TEMPLATE.formatted("email"));
+                                throw new CountConstraintException(String.format(COUNT_EXCEPTION_TEMPLATE, "email"));
                             }
                         }
                     }
@@ -146,13 +146,13 @@ public class ContactService {
         getUpdateRequestByEnumMap(requestList).forEach((contactType, requests) -> {
             List<String> requestOldValueList = requests.stream()
                     .map(ContactUpdateRequest::getOldValue)
-                    .toList();
+                    .collect(Collectors.toList());
             List<String> requestNewValueList = requests.stream()
                     .map(ContactUpdateRequest::getNewValue)
-                    .toList();
+                    .collect(Collectors.toList());
 
             switch (contactType) {
-                case PHONE -> {
+                case PHONE: {
                     validateContactList(ContactTypeEnum.PHONE, requestNewValueList);
                     
                     Map<String, List<PhoneDataEntity>> entityByOldValueMap =
@@ -166,7 +166,7 @@ public class ContactService {
                                 entity.setPhone(r.getNewValue());
                                 return entity;
                             })
-                            .toList();
+                            .collect(Collectors.toList());
                     try {
                         List<PhoneDataEntity> savedEntityList = phoneDataRepository.saveAll(entityForSaveList);
                         log.info("Updated {} email data for user_id: {}",
@@ -175,7 +175,7 @@ public class ContactService {
 
                         resultList.addAll(savedEntityList.stream()
                                 .map(phoneDataMapper::toDto)
-                                .toList());
+                                .collect(Collectors.toList()));
                     } catch (Exception e) {
                         log.error("Failed to update {} email data for user_id: {} due to {}",
                                 entityForSaveList.size(),
@@ -183,7 +183,7 @@ public class ContactService {
                                 e.getMessage());
                     }
                 }
-                case EMAIL -> {
+                case EMAIL: {
                     validateContactList(ContactTypeEnum.EMAIL, requestNewValueList);
 
                     Map<String, List<EmailDataEntity>> entityByOldValueMap =
@@ -197,7 +197,7 @@ public class ContactService {
                                 entity.setEmail(r.getNewValue());
                                 return entity;
                             })
-                            .toList();
+                            .collect(Collectors.toList());
                     try {
                         List<EmailDataEntity> savedEntityList = emailDataRepository.saveAll(entityForSaveList);
                         log.info("Updated {} phone data for user_id: {}",
@@ -206,7 +206,7 @@ public class ContactService {
 
                         resultList.addAll(savedEntityList.stream()
                                 .map(emailDataMapper::toDto)
-                                .toList());
+                                .collect(Collectors.toList()));
                     } catch (Exception e) {
                         log.error("Failed to update {} phone data for user_id: {} due to {}",
                                 entityForSaveList.size(),
@@ -223,16 +223,16 @@ public class ContactService {
     public void checkPhonesExistence(List<String> phones) {
         List<String> existingPhoneList = phoneDataRepository.findExistingPhones(phones);
         if (!existingPhoneList.isEmpty()) {
-            throw new UniqueConstraintException(UNIQUE_EXCEPTION_TEMPLATE
-                    .formatted("phones", existingPhoneList));
+            throw new UniqueConstraintException(String.format(UNIQUE_EXCEPTION_TEMPLATE,
+                    "phones", existingPhoneList));
         }
     }
 
     public void checkEmailsExistence(List<String> emails) {
         List<String> existingEmailList = emailDataRepository.findExistingEmails(emails);
         if (!existingEmailList.isEmpty()) {
-            throw new UniqueConstraintException(UNIQUE_EXCEPTION_TEMPLATE
-                    .formatted("emails", existingEmailList));
+            throw new UniqueConstraintException(String.format(UNIQUE_EXCEPTION_TEMPLATE,
+                    "emails", existingEmailList));
         }
     }
 

@@ -71,16 +71,16 @@ public class UserService {
                                 phoneEntityListByUserIdMap.get(dto.getId())
                                         .stream()
                                         .map(phoneDataMapper::toDto)
-                                        .toList());
+                                        .collect(Collectors.toList()));
                         dto.setEmailDataDtoList(
                                 emailEntityListByUserIdMap.get(dto.getId())
                                         .stream()
                                         .map(emailDataMapper::toDto)
-                                        .toList());
+                                        .collect(Collectors.toList()));
 
                         return dto;
                     })
-                    .toList();
+                    .collect(Collectors.toList());
 
             return new PageImpl<>(userDtoList, pageable, userDtoList.size());
         } catch (Exception e) {

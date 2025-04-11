@@ -18,14 +18,14 @@ public class ContactValidator {
             case PHONE: {
                 contactList.forEach(phone -> {
                     if (!phone.matches(PHONE_REGEX)) {
-                        throw new RegexException(PHONE_EXCEPTION_TEMPLATE.formatted(phone));
+                        throw new RegexException(String.format(PHONE_EXCEPTION_TEMPLATE, phone));
                     }
                 });
             }
             case EMAIL: {
                 contactList.forEach(email -> {
                     if (!email.matches(EMAIL_REGEX)) {
-                        throw new RegexException(EMAIL_EXCEPTION_TEMPLATE.formatted(email));
+                        throw new RegexException(String.format(EMAIL_EXCEPTION_TEMPLATE, email));
                     }
                 });
             }

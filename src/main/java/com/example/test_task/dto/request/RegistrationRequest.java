@@ -1,8 +1,8 @@
 package com.example.test_task.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Data
