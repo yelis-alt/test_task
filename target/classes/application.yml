@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/mesh_db
-    username: mesh_user
-    password: mesh_test1
+    url: jdbc:postgresql://localhost:5433/me_db
+    username: me_user
+    password: me_test1
     driver-class-name: org.postgresql.Driver
   jpa:
     properties:

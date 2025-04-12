@@ -1,7 +1,7 @@
 package com.example.test_task.persistence.mapper;
 
-import com.example.test_task.dto.business.UserDto;
-import com.example.test_task.dto.projection.UserProjection;
+import com.example.test_task.api.dto.business.UserDto;
+import com.example.test_task.api.dto.projection.UserProjection;
 import com.example.test_task.persistence.entity.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

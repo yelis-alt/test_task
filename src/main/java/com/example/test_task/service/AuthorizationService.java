@@ -1,8 +1,7 @@
 package com.example.test_task.service;
 
-import com.example.test_task.dto.business.UserDto;
-import com.example.test_task.dto.request.LoginRequest;
-import com.example.test_task.dto.request.RegistrationRequest;
+import com.example.test_task.api.dto.business.UserDto;
+import com.example.test_task.api.dto.request.RegistrationRequest;
 import com.example.test_task.persistence.entity.AccountEntity;
 import com.example.test_task.persistence.entity.EmailDataEntity;
 import com.example.test_task.persistence.entity.PhoneDataEntity;
@@ -24,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -74,25 +72,6 @@ public class AuthorizationService {
         } catch (Exception e) {
             log.debug("Failed to register a new user with name: {} due to {}", request.getName(), e.getMessage());
             throw new ServiceException(e.getMessage());
-        }
-    }
-
-    public Optional<UserDto> authenticate(LoginRequest request) {
-        log.debug("Attempting to login user with email: {} and phone: {}",
-                request.getEmail(), request.getPhone());
-        try {
-            return userRepository.findByCredentials(request.getPhone(), request.getEmail())
-                    .map(u -> {
-                        if (passwordEncoder.matches(request.getPassword(), u.getPassword())) {
-                            return userMapper.toDto(u);
-                        } else {
-                            return null;
-                        }
-                    });
-        } catch (Exception e) {
-            log.error("Attempting to login user with email: {} and phone: {} due to {}",
-                    request.getEmail(), request.getPhone(), e.getMessage());
-            return Optional.empty();
         }
     }
 }

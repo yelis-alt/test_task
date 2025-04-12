@@ -1,6 +1,6 @@
 package com.example.test_task.persistence.mapper;
 
-import com.example.test_task.dto.business.PhoneDataDto;
+import com.example.test_task.api.dto.business.PhoneDataDto;
 import com.example.test_task.persistence.entity.PhoneDataEntity;
 import org.mapstruct.Mapper;
 

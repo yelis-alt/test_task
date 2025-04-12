@@ -1,8 +1,9 @@
 package com.example.test_task.service;
 
-import com.example.test_task.dto.business.UserDto;
-import com.example.test_task.dto.projection.UserProjection;
-import com.example.test_task.dto.request.UserFilterRequest;
+import com.example.test_task.api.dto.business.UserDto;
+import com.example.test_task.api.dto.projection.EmailProjection;
+import com.example.test_task.api.dto.projection.UserProjection;
+import com.example.test_task.api.dto.request.UserFilterRequest;
 import com.example.test_task.persistence.entity.EmailDataEntity;
 import com.example.test_task.persistence.entity.PhoneDataEntity;
 import com.example.test_task.persistence.mapper.EmailDataMapper;
@@ -71,21 +72,28 @@ public class UserService {
                                 phoneEntityListByUserIdMap.get(dto.getId())
                                         .stream()
                                         .map(phoneDataMapper::toDto)
-                                        .toList());
+                                        .collect(Collectors.toList()));
                         dto.setEmailDataDtoList(
                                 emailEntityListByUserIdMap.get(dto.getId())
                                         .stream()
                                         .map(emailDataMapper::toDto)
-                                        .toList());
+                                        .collect(Collectors.toList()));
 
                         return dto;
                     })
-                    .toList();
+                    .collect(Collectors.toList());
 
             return new PageImpl<>(userDtoList, pageable, userDtoList.size());
         } catch (Exception e) {
             log.error("Failed to get users with filters", e);
             throw new ServiceException("Failed to retrieve users", e);
         }
+    }
+
+    public String getEmailByPhone(String phone) {
+        EmailProjection emailProjection = userRepository.findEmailByPhone(phone);
+        return emailProjection != null
+                ? emailProjection.getEmail()
+                : null;
     }
 }
